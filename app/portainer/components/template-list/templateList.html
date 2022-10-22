@@ -1,12 +1,12 @@
 <div class="datatable">
   <rd-widget>
-    <rd-widget-header icon="{{ $ctrl.titleIcon }}" feather-icon="true" title-text="{{ $ctrl.titleText }}"></rd-widget-header>
+    <rd-widget-header icon="{{ $ctrl.titleIcon }}" title-text="{{ $ctrl.titleText }}"></rd-widget-header>
     <rd-widget-body classes="no-padding">
       <div class="actionBar">
         <div class="row">
           <div class="col-sm-12">
             <button type="button" class="btn btn-sm btn-primary" ui-sref="docker.templates.new" ng-if="$ctrl.showAddAction">
-              <i class="fa fa-plus space-right" aria-hidden="true"></i>Add template
+              <pr-icon icon="'plus'" class-name="'mr-1'"></pr-icon>Add template
             </button>
           </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="searchBar items-center flex gap-1">
-              <pr-icon icon="'search'" feather="true" class-name="'searchIcon'"></pr-icon>
+              <pr-icon icon="'search'" class-name="'searchIcon'"></pr-icon>
               <input
                 type="text"
                 class="searchInput"
