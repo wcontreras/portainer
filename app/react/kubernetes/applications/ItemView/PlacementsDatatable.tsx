@@ -1,13 +1,9 @@
 import { CellProps, Column, HeaderProps } from 'react-table';
 import { useStore } from 'zustand';
 import { Check, ChevronDown, ChevronUp, X } from 'react-feather';
-import { Fragment } from 'react';
-import clsx from 'clsx';
 
+import Compress from '@/assets/ico/compress.svg?c';
 import { useUser } from '@/portainer/hooks/useUser';
-import compress from '@/assets/ico/compress.svg?c';
-import { nodeAffinityValues } from '@/kubernetes/filters/application';
-import { KubernetesPodNodeAffinityNodeSelectorRequirementOperators } from '@/kubernetes/pod/models';
 
 import {
   BasicTableSettings,
@@ -19,28 +15,12 @@ import { useSearchBarState } from '@@/datatables/SearchBar';
 import { Button } from '@@/buttons';
 import { Icon } from '@@/Icon';
 import { ExpandableDatatable } from '@@/datatables/ExpandableDatatable';
+import { useRepeater } from '@@/datatables/useRepeater';
 import { TableSettingsMenu } from '@@/datatables';
 import { TableSettingsMenuAutoRefresh } from '@@/datatables/TableSettingsMenuAutoRefresh';
-import { useRepeater } from '@@/datatables/useRepeater';
 
-type Node = {
-  Name: string;
-  AcceptsApplication: boolean;
-  UnmetTaints?: Array<{
-    Key: string;
-    Value?: string;
-    Effect: string;
-  }>;
-  UnmatchedNodeSelectorLabels?: Array<{ key: string; value: string }>;
-  Highlighted: boolean;
-  UnmatchedNodeAffinities?: Array<
-    Array<{
-      key: string;
-      operator: KubernetesPodNodeAffinityNodeSelectorRequirementOperators;
-      values: string;
-    }>
-  >;
-};
+import { Node } from './types';
+import { SubRow } from './PlacementsDatatableSubRow';
 
 const columns: Column<Node>[] = [
   {
@@ -125,7 +105,7 @@ export function PlacementsDatatable({
   return (
     <ExpandableDatatable<Node>
       title="Placement constraints/preferences"
-      titleIcon={compress}
+      titleIcon={Compress}
       dataset={dataset}
       initialPageSize={settings.pageSize}
       onPageSizeChange={settings.setPageSize}
@@ -146,118 +126,13 @@ export function PlacementsDatatable({
         </TableSettingsMenu>
       )}
       emptyContentLabel="No node available."
-      renderSubRow={(row) =>
-        isAdmin ? (
-          <>
-            {row.original.UnmetTaints &&
-              row.original.UnmetTaints.length > 0 &&
-              row.original.UnmetTaints.map((taint) => (
-                <tr
-                  className={clsx({
-                    'datatable-highlighted': row.original.Highlighted,
-                    'datatable-unhighlighted': !row.original.Highlighted,
-                  })}
-                  key={taint.Key}
-                >
-                  <td colSpan={row.cells.length}>
-                    This application is missing a toleration for the taint
-                    <code className="space-left">
-                      {taint.Key}
-                      {taint.Value ? `=${taint.Value}` : ''}:{taint.Effect}
-                    </code>
-                  </td>
-                </tr>
-              ))}
-            {row.original.UnmatchedNodeSelectorLabels &&
-              row.original.UnmatchedNodeSelectorLabels.length > 0 &&
-              row.original.UnmatchedNodeSelectorLabels.map((label) => (
-                <tr
-                  className={clsx({
-                    'datatable-highlighted': row.original.Highlighted,
-                    'datatable-unhighlighted': !row.original.Highlighted,
-                  })}
-                  key={label.key}
-                >
-                  <td colSpan={row.cells.length}>
-                    This application can only be scheduled on a node where the
-                    label <code>{label.key}</code> is set to{' '}
-                    <code>{label.value}</code>
-                  </td>
-                </tr>
-              ))}
-            {row.original.UnmatchedNodeAffinities &&
-              row.original.UnmatchedNodeAffinities.length && (
-                <>
-                  <tr
-                    className={clsx({
-                      'datatable-highlighted': row.original.Highlighted,
-                      'datatable-unhighlighted': !row.original.Highlighted,
-                    })}
-                  >
-                    <td colSpan={row.cells.length}>
-                      This application can only be scheduled on nodes respecting
-                      one of the following labels combination:{' '}
-                    </td>
-                  </tr>
-                  {row.original.UnmatchedNodeAffinities.map((aff) => (
-                    <tr
-                      className={clsx({
-                        'datatable-highlighted': row.original.Highlighted,
-                        'datatable-unhighlighted': !row.original.Highlighted,
-                      })}
-                    >
-                      <td />
-                      <td colSpan={row.cells.length - 1}>
-                        {aff.map((term, index) => (
-                          <Fragment key={index}>
-                            <code>
-                              {term.key} {term.operator}{' '}
-                              {nodeAffinityValues(term.values, term.operator)}
-                            </code>
-                            <span>{index === aff.length - 1 ? '' : ' + '}</span>
-                          </Fragment>
-                        ))}
-                      </td>
-                    </tr>
-                  ))}
-                </>
-              )}
-          </>
-        ) : (
-          <>
-            {row.original.UnmetTaints && row.original.UnmetTaints.length > 0 && (
-              <tr
-                className={clsx({
-                  'datatable-highlighted': row.original.Highlighted,
-                  'datatable-unhighlighted': !row.original.Highlighted,
-                })}
-              >
-                <td colSpan={row.cells.length}>
-                  Placement constraint not respected for that node.
-                </td>
-              </tr>
-            )}
-
-            {(row.original.UnmatchedNodeSelectorLabels &&
-              row.original.UnmatchedNodeSelectorLabels.length > 0 &&
-              row.original.UnmatchedNodeSelectorLabels.length > 0) ||
-              (row.original.UnmatchedNodeAffinities &&
-                row.original.UnmatchedNodeAffinities.length > 0 &&
-                row.original.UnmatchedNodeAffinities.length > 0 && (
-                  <tr
-                    className={clsx({
-                      'datatable-highlighted': row.original.Highlighted,
-                      'datatable-unhighlighted': !row.original.Highlighted,
-                    })}
-                  >
-                    <td colSpan={row.cells.length}>
-                      Placement label not respected for that node.
-                    </td>
-                  </tr>
-                ))}
-          </>
-        )
-      }
+      renderSubRow={(row) => (
+        <SubRow
+          isAdmin={isAdmin}
+          node={row.original}
+          cellCount={row.cells.length}
+        />
+      )}
     />
   );
 }
