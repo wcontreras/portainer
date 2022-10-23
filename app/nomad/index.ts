@@ -1,7 +1,7 @@
 import angular from 'angular';
 import { StateRegistry, StateService } from '@uirouter/angularjs';
 
-import { isNomadEnvironment } from '@/portainer/environments/utils';
+import { isNomadEnvironment } from '@/react/portainer/environments/utils';
 import { DashboardView } from '@/react/nomad/DashboardView';
 import { r2a } from '@/react-tools/react2angular';
 import { EventsView } from '@/react/nomad/jobs/EventsView';
@@ -10,7 +10,7 @@ import { withReactQuery } from '@/react-tools/withReactQuery';
 import { withCurrentUser } from '@/react-tools/withCurrentUser';
 import { JobsView } from '@/react/nomad/jobs/JobsView';
 import { getLeader } from '@/react/nomad/nomad.service';
-import { Environment } from '@/portainer/environments/types';
+import { Environment } from '@/react/portainer/environments/types';
 import { EndpointProvider, StateManager } from '@/portainer/services/types';
 import { notifyError } from '@/portainer/services/notifications';
 import { isBE } from '@/portainer/feature-flags/feature-flags.service';

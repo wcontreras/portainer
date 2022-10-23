@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import { useCurrentStateAndParams } from '@uirouter/react';
 
 import * as notifications from '@/portainer/services/notifications';
-import { EnvironmentId } from '@/portainer/environments/types';
+import { EnvironmentId } from '@/react/portainer/environments/types';
 import axios, { parseAxiosError } from '@/portainer/services/axios';
 
 import { NomadEventsList } from '../../types';

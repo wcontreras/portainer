@@ -1,5 +1,5 @@
 import * as notifications from '@/portainer/services/notifications';
-import { EnvironmentId } from '@/portainer/environments/types';
+import { EnvironmentId } from '@/react/portainer/environments/types';
 import { Job } from '@/react/nomad/types';
 
 import { deleteJob } from '../../../jobs.service';
