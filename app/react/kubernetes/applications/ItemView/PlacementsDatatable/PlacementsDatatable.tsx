@@ -57,7 +57,6 @@ export function PlacementsDatatable({
       columns={columns}
       disableSelect
       noWidget
-      expandable
       renderTableSettings={() => (
         <TableSettingsMenu>
           <TableSettingsMenuAutoRefresh
