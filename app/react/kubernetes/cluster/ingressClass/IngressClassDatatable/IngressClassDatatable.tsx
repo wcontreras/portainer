@@ -40,8 +40,9 @@ export function IngressClassDatatable({
 }: Props) {
   const settings = useStore(settingsStore);
   const [search, setSearch] = useSearchBarState(storageKey);
-  const [ingControllerFormValues, setIngControllerFormValues] =
-    useState(ingressControllers || []);
+  const [ingControllerFormValues, setIngControllerFormValues] = useState(
+    ingressControllers || []
+  );
   const columns = useColumns();
 
   useEffect(() => {
