@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode } from 'react';
-import { Plus, RefreshCw, Trash2 } from 'react-feather';
+import { Plus, RefreshCw, Trash2 } from 'lucide-react';
 
 import { Annotations } from '@/kubernetes/react/views/networks/ingresses/components/annotations';
 
