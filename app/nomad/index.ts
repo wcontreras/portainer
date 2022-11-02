@@ -16,12 +16,13 @@ import { notifyError } from '@/portainer/services/notifications';
 import { isBE } from '@/portainer/feature-flags/feature-flags.service';
 import { EndpointProviderInterface } from '@/portainer/services/endpointProvider';
 
-import { logsView } from './logs-view';
 import { reactModule } from './react';
+import { logsModule } from './logs';
 
 export const nomadModule = angular
-  .module('portainer.nomad', ['portainer.app', reactModule])
+  .module('portainer.nomad', [reactModule, logsModule])
   .config(config)
+
   .component(
     'nomadDashboardView',
     r2a(withUIRouter(withReactQuery(withCurrentUser(DashboardView))), [])
@@ -33,8 +34,7 @@ export const nomadModule = angular
   .component(
     'nomadJobsView',
     r2a(withUIRouter(withReactQuery(withCurrentUser(JobsView))), [])
-  )
-  .component('nomadLogsView', logsView).name;
+  ).name;
 
 /* @ngInject */
 function config($stateRegistryProvider: StateRegistry) {
