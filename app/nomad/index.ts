@@ -11,9 +11,10 @@ import { withCurrentUser } from '@/react-tools/withCurrentUser';
 import { JobsView } from '@/react/nomad/jobs/JobsView';
 import { getLeader } from '@/react/nomad/nomad.service';
 import { Environment } from '@/react/portainer/environments/types';
-import { EndpointProvider, StateManager } from '@/portainer/services/types';
+import { StateManager } from '@/portainer/services/types';
 import { notifyError } from '@/portainer/services/notifications';
 import { isBE } from '@/portainer/feature-flags/feature-flags.service';
+import { EndpointProviderInterface } from '@/portainer/services/endpointProvider';
 
 import { logsView } from './logs-view';
 import { reactModule } from './react';
@@ -52,7 +53,7 @@ function config($stateRegistryProvider: StateRegistry) {
       $async: (fn: () => Promise<void>) => Promise<void>,
       $state: StateService,
       endpoint: Environment,
-      EndpointProvider: EndpointProvider,
+      EndpointProvider: EndpointProviderInterface,
       StateManager: StateManager
     ) {
       return $async(async () => {
@@ -63,7 +64,6 @@ function config($stateRegistryProvider: StateRegistry) {
 
         try {
           await getLeader(endpoint.Id);
-          EndpointProvider.setEndpointID(endpoint.Id);
           await StateManager.updateEndpointState(endpoint);
         } catch (e) {
           notifyError(
