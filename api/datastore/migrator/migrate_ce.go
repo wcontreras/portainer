@@ -147,6 +147,7 @@ func (m *Migrator) Migrate() error {
 			newMigratorCount = len(migration.migrationFuncs)
 		}
 	}
+
 	if versionUpdateRequired || newMigratorCount != version.MigratorCount {
 		version.SchemaVersion = portainer.APIVersion
 		version.MigratorCount = newMigratorCount
